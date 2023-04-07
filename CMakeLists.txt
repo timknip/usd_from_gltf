@@ -18,10 +18,10 @@ project (usd_from_gltf)
 # We don't use Python in this tool, but when the USD library is built with
 # PXR_PYTHON_SUPPORT_ENABLED it references it anyway.
 if (EXISTS "${USD_DIR}/lib/python/")
-  find_package(Python COMPONENTS Development)
-  if (NOT Python_FOUND)
+  find_package(Python2 COMPONENTS Development)
+  if (NOT Python2_FOUND)
     message(FATAL_ERROR "Missing python libs.")
-  endif (NOT Python_FOUND)
+  endif (NOT Python2_FOUND)
 endif (EXISTS "${USD_DIR}/lib/python/")
 
 set(USD_INCLUDE_DIRS
@@ -29,30 +29,31 @@ set(USD_INCLUDE_DIRS
   "${USD_DIR}/include/boost-1_61"
 # Visual Studio 2017 requires boost 1.65.1.
   "${USD_DIR}/include/boost-1_65_1"
-  ${Python_INCLUDE_DIRS}
+  "${USD_DIR}/include/boost-1_70"
+  ${Python2_INCLUDE_DIRS}
 )
 
 link_directories(
   "${USD_DIR}/lib"
-  ${Python_LIBRARY_DIRS}
+  ${Python2_LIBRARY_DIRS}
 )
 
 if (MSVC)
 set(USD_LIBS
-  gf.lib
-  plug.lib
-  sdf.lib
-  tf.lib
-  usd.lib
-  usdGeom.lib
-  usdShade.lib
-  usdSkel.lib
-  usdUtils.lib
-  vt.lib
+  usd_gf.lib
+  usd_plug.lib
+  usd_sdf.lib
+  usd_tf.lib
+  usd_usd.lib
+  usd_usdGeom.lib
+  usd_usdShade.lib
+  usd_usdSkel.lib
+  usd_usdUtils.lib
+  usd_vt.lib
 )
 elseif (APPLE)
 set(USD_LIBS
-  ${Python_LIBRARIES}
+  ${Python2_LIBRARIES}
   -lpthread
   libgf.dylib
   libplug.dylib
@@ -65,12 +66,12 @@ set(USD_LIBS
   libusdUtils.dylib
   libvt.dylib
 )
-if (Python_FOUND)
+if (Python2_FOUND)
   list(APPEND USD_LIBS "${USD_DIR}/lib/libboost_python.dylib")
-endif (Python_FOUND)
+endif (Python2_FOUND)
 else ()
 set(USD_LIBS
-  ${Python_LIBRARIES}
+  ${Python2_LIBRARIES}
   -lpthread
   libgf.so
   libplug.so
@@ -85,7 +86,7 @@ set(USD_LIBS
 )
 if (Python_FOUND)
   list(APPEND USD_LIBS "${USD_DIR}/lib/libboost_python.so")
-endif (Python_FOUND)
+endif (Python2_FOUND)
 endif ()
 
 if (MSVC)
