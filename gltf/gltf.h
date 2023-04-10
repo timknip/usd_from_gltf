@@ -905,10 +905,10 @@ struct Gltf {
   };
 
   struct LightPunctual {
-      std::string name;
+      std::string name = "";
       std::string type;
       float color[3] = {1, 1, 1};
-      float intensity;
+      float intensity = 1.0;
   };
 
   struct ExtensionLightsPunctual {
