@@ -23,6 +23,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <map>
 
 struct Gltf {
   // Integer identifier used for internal glTF index references.
@@ -118,6 +119,7 @@ struct Gltf {
     kExtensionSpecGloss,         // KHR_materials_pbrSpecularGlossiness
     kExtensionTextureTransform,  // KHR_texture_transform
     kExtensionDraco,             // KHR_draco_mesh_compression
+    kExtensionLightsPunctual,    // KHR_lights_punctual
     kExtensionCount
   };
 
@@ -785,6 +787,8 @@ struct Gltf {
     // [Optional] The index of the skin referenced by this node.
     // * If provided, mesh must also be provided.
     Id skin = Id::kNull;
+    // [Optional] The index of the light in this node.
+    Id light = Id::kNull;
 
     // [Required] The transform must be set to either a matrix or SRT.
     bool is_matrix;
@@ -900,10 +904,29 @@ struct Gltf {
     Id source = Id::kNull;
   };
 
+  struct LightPunctual {
+      std::string name;
+      std::string type;
+      float color[3] = {1, 1, 1};
+      float intensity;
+  };
+
+  struct ExtensionLightsPunctual {
+      std::vector<LightPunctual> lights;
+  };
+
+  struct Extensions {
+      ExtensionLightsPunctual lightsPunctual;
+  };
+
   // [Required] Metadata about the glTF asset.
   Asset asset;
   // [Optional] The index of the default scene.
   Id scene = Id::kNull;
+  // [Osptional]
+
+  Extensions extensions;
+
   // [Optional] Names of glTF extensions used somewhere in this asset.
   std::vector<ExtensionId> extensionsUsed;
   // [Optional] Names of glTF extensions required to properly load this asset.

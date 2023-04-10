@@ -42,6 +42,9 @@ using Sampler = Gltf::Sampler;
 using Scene = Gltf::Scene;
 using Skin = Gltf::Skin;
 using Texture = Gltf::Texture;
+using Extensions = Gltf::Extensions;
+using LightPunctual = Gltf::LightPunctual;
+using ExtensionLightsPunctual = Gltf::ExtensionLightsPunctual;
 
 ptrdiff_t FindString(size_t count, const char* const* values,
                      const std::string& key) {
@@ -372,6 +375,7 @@ class GltfLoader {
     LoadFieldArray(json, "extensionsRequired", kGltfSeverityNone,
                    &out->extensionsRequired, kGltfSeverityError);
     PruneUnknownExtensions(&out->extensionsRequired);
+    LoadField(json, "extensions", kGltfSeverityNone, &out->extensions);
     LoadFieldArray(json, "accessors", kGltfSeverityNone, &out->accessors);
     LoadFieldArray(json, "animations", kGltfSeverityNone, &out->animations);
     LoadFieldArray(json, "buffers", kGltfSeverityNone, &out->buffers);
@@ -1187,6 +1191,15 @@ class GltfLoader {
     WarnUnusedExtensionsAndExtras(json);
   }
 
+  struct NodeLight {
+    Gltf::Id light;
+  };
+
+  void Load(const Json& json, NodeLight* out) {
+    LoadField(json, "light", kGltfSeverityNone, &out->light);
+    WarnUnusedExtensionsAndExtras(json);
+  }
+
   void Load(const Json& json, Node* out) {
     LoadField(json, "name", kGltfSeverityNone, &out->name);
     LoadField(json, "camera", kGltfSeverityNone, &out->camera);
@@ -1205,7 +1218,13 @@ class GltfLoader {
     }
     LoadFieldArray(json, "children", kGltfSeverityNone, &out->children);
     LoadFieldArray(json, "weights", kGltfSeverityNone, &out->weights);
-    WarnUnusedExtensionsAndExtras(json);
+
+    NodeLight nodeLight = { out->light };
+    if(LoadExtension(json, Gltf::kExtensionLightsPunctual, &nodeLight)) {
+      out->light = nodeLight.light;
+    }
+
+    WarnUnusedExtensionsAndExtras(json, { Gltf::kExtensionLightsPunctual });
   }
 
   void Load(const Json& json, Sampler::MagFilter* out) {
@@ -1254,6 +1273,24 @@ class GltfLoader {
     LoadField(json, "name", kGltfSeverityNone, &out->name);
     LoadField(json, "sampler", kGltfSeverityNone, &out->sampler);
     LoadField(json, "source", kGltfSeverityNone, &out->source);
+    WarnUnusedExtensionsAndExtras(json);
+  }
+
+  void Load(const Json& json, LightPunctual* out) {
+    LoadField(json, "name", kGltfSeverityNone, &out->name);
+    LoadField(json, "type", kGltfSeverityNone, &out->type);
+    LoadField(json, "intensity", kGltfSeverityNone, &out->intensity);
+    LoadFieldArray(json, "color", kGltfSeverityNone, out->color);
+    WarnUnusedExtensionsAndExtras(json);
+  }
+
+  void Load(const Json& json, ExtensionLightsPunctual* out) {
+    LoadFieldArray(json, "lights", kGltfSeverityNone, &out->lights);
+    WarnUnusedExtensionsAndExtras(json);
+  }
+
+  void Load(const Json& json, Extensions* out) {
+    LoadField(json, "KHR_lights_punctual", kGltfSeverityNone, &out->lightsPunctual);
     WarnUnusedExtensionsAndExtras(json);
   }
 };

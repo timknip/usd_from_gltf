@@ -148,6 +148,7 @@ const char* const Gltf::kExtensionIdNames[kExtensionCount] = {
     "KHR_materials_pbrSpecularGlossiness",  // kExtensionSpecGloss
     "KHR_texture_transform",                // kExtensionTextureTransform
     "KHR_draco_mesh_compression",           // kExtensionDraco
+    "KHR_lights_punctual"                   // kExtensionLightsPunctual
 };
 
 const uint16_t Gltf::kAccessorComponentTypeValues[Accessor::kComponentCount] = {
@@ -555,6 +556,12 @@ const std::vector<Gltf::ExtensionId> Gltf::GetReferencedExtensions() const {
       if (prim.draco.bufferView != Id::kNull) {
         referenced[kExtensionDraco] = true;
       }
+    }
+  }
+
+  for (const Node& node: nodes) {
+    if (node.light != Id::kNull) {
+      referenced[kExtensionLightsPunctual] = true;
     }
   }
 
