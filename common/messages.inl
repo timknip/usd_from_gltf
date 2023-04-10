@@ -42,6 +42,7 @@ UFG_MSG2(INFO , USD                          , "USD: %s (%s)", const char*, comm
 UFG_MSG2(ERROR, USD_FATAL                    , "USD: FATAL: %s (%s)", const char*, commentary, const char*, function)
 UFG_MSG0(WARN , ALPHA_MASK_UNSUPPORTED       , "Alpha mask currently unsupported.")
 UFG_MSG0(WARN , CAMERAS_UNSUPPORTED          , "Cameras currently unsupported.")
+UFG_MSG0(WARN , LIGHTS_UNSUPPORTED           , "Lights currently unsupported.")
 UFG_MSG0(WARN , MORPH_TARGETS_UNSUPPORTED    , "Morph targets currently unsupported.")
 UFG_MSG0(WARN , MULTIPLE_UVSETS_UNSUPPORTED  , "Multiple UV sets unsupported on iOS viewer.")
 UFG_MSG0(WARN , SECONDARY_UVSET_DISABLED     , "Disabling secondary UV set.")

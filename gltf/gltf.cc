@@ -127,6 +127,7 @@ void Gltf::Swap(Gltf* other) {
   std::swap(other->scene, scene);
   other->extensionsUsed.swap(extensionsUsed);
   other->extensionsRequired.swap(extensionsRequired);
+  std::swap(other->extensions, extensions);
   other->accessors.swap(accessors);
   other->animations.swap(animations);
   other->buffers.swap(buffers);

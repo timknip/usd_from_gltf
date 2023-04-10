@@ -1314,6 +1314,7 @@ bool GltfLoad(std::istream& is, const GltfLoadSettings& settings,
   GltfLoader loader;
   Gltf gltf;
   loader.LoadGltf(json, settings, &gltf, logger);
+
   out_gltf->Swap(&gltf);
 
   // Fail on any errors.

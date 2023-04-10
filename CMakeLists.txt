@@ -49,6 +49,7 @@ set(USD_LIBS
   usd_usdShade.lib
   usd_usdSkel.lib
   usd_usdUtils.lib
+  usd_usdLux.lib
   usd_vt.lib
 )
 elseif (APPLE)
