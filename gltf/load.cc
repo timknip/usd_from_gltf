@@ -1276,11 +1276,19 @@ class GltfLoader {
     WarnUnusedExtensionsAndExtras(json);
   }
 
+  void Load(const Json& json, LightPunctual::Spot* out) {
+      LoadField(json, "innerConeAngle", kGltfSeverityNone, &out->innerConeAngle);
+      LoadField(json, "outerConeAngle", kGltfSeverityNone, &out->outerConeAngle);
+  }
+
   void Load(const Json& json, LightPunctual* out) {
     LoadField(json, "name", kGltfSeverityNone, &out->name);
     LoadField(json, "type", kGltfSeverityNone, &out->type);
     LoadField(json, "intensity", kGltfSeverityNone, &out->intensity);
     LoadFieldArray(json, "color", kGltfSeverityNone, out->color);
+    if (out->type == "spot") {
+        LoadField(json, "spot", kGltfSeverityNone, &out->spot);
+    }
     WarnUnusedExtensionsAndExtras(json);
   }
 

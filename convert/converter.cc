@@ -40,6 +40,7 @@
 #include "pxr/usd/usdSkel/bindingAPI.h"
 #include "pxr/usd/usdSkel/root.h"
 #include "pxr/usd/usdSkel/skeleton.h"
+#include "pxr/usd/usdLux/shapingAPI.h"
 #include "pxr/usd/usdLux/sphereLight.h"
 
 namespace ufg {
@@ -66,6 +67,7 @@ using PXR_NS::UsdSkelSkeleton;
 using PXR_NS::UsdStage;
 using PXR_NS::VtValue;
 using PXR_NS::UsdLuxLightAPI;
+using PXR_NS::UsdLuxShapingAPI;
 using PXR_NS::UsdLuxSphereLight;
 
 namespace {
@@ -929,11 +931,21 @@ void Converter::CreateNodeHierarchy(Gltf::Id node_id,
           cc_.path_table.MakeUnique(path, "light", light.name, light_index);
       const SdfPath usd_path(path_str);
 
-      if (light.type == "point") {
-        UsdLuxSphereLight sphere_light = UsdLuxSphereLight::Define(cc_.stage, usd_path);
-        usd_light_api = sphere_light.LightAPI();
-      }
+      UsdLuxSphereLight sphere_light = UsdLuxSphereLight::Define(cc_.stage, usd_path);
+      usd_light_api = sphere_light.LightAPI();
 
+      if (light.type == "spot") {
+
+        sphere_light.CreateTreatAsPointAttr().Set(true);
+
+        if (UsdLuxShapingAPI::CanApply(sphere_light.GetPrim())) {
+            UsdLuxShapingAPI::Apply(sphere_light.GetPrim());
+        }
+
+        UsdLuxShapingAPI usd_shaping_api(sphere_light.GetPrim());
+
+        usd_shaping_api.CreateShapingConeAngleAttr().Set(light.spot.outerConeAngle * (180.0f / float(M_PI)));
+      }
       usd_light_api.CreateIntensityAttr().Set(light.intensity);
       usd_light_api.CreateColorAttr().Set(GfVec3f(light.color[0], light.color[1], light.color[2]));
   }

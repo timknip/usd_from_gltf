@@ -25,6 +25,10 @@
 #include <vector>
 #include <map>
 
+#ifndef M_PI
+#    define M_PI 3.14159265358979323846
+#endif
+
 struct Gltf {
   // Integer identifier used for internal glTF index references.
   enum class Id : uint16_t {
@@ -909,6 +913,13 @@ struct Gltf {
       std::string type;
       float color[3] = {1, 1, 1};
       float intensity = 1.0;
+
+      struct Spot {
+          float innerConeAngle = 0.0;
+          float outerConeAngle = M_PI / 4.0;
+      };
+
+      Spot spot;
   };
 
   struct ExtensionLightsPunctual {
