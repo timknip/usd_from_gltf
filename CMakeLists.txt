@@ -68,6 +68,7 @@ set(USD_LIBS
   libusdUtils.dylib
   libvt.dylib
 )
+
 if (Python2_FOUND)
   list(APPEND USD_LIBS "${USD_DIR}/lib/libboost_python.dylib")
 endif (Python2_FOUND)
@@ -75,17 +76,17 @@ else ()
 set(USD_LIBS
   ${Python2_LIBRARIES}
   -lpthread
-  libgf.so
-  libplug.so
-  libsdf.so
-  libtf.so
-  libusd.so
-  libusdGeom.so
-  libusdLux.so
-  libusdShade.so
-  libusdSkel.so
-  libusdUtils.so
-  libvt.so
+  libusd_gf.so
+  libusd_plug.so
+  libusd_sdf.so
+  libusd_tf.so
+  libusd_usd.so
+  libusd_usdGeom.so
+  libusd_usdLux.so
+  libusd_usdShade.so
+  libusd_usdSkel.so
+  libusd_usdUtils.so
+  libusd_vt.so
 )
 if (Python_FOUND)
   list(APPEND USD_LIBS "${USD_DIR}/lib/libboost_python.so")
