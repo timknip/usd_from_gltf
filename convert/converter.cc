@@ -919,7 +919,6 @@ void Converter::CreateNodeHierarchy(Gltf::Id node_id,
   }
 
   if (node.light != Gltf::Id::kNull) {
-      const std::string src_node_name = "light";
 
       const size_t light_index = Gltf::IdToIndex(node.light);
 

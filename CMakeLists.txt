@@ -61,6 +61,7 @@ set(USD_LIBS
   libsdf.dylib
   libtf.dylib
   libusd.dylib
+  libusdLux.dylib
   libusdGeom.dylib
   libusdShade.dylib
   libusdSkel.dylib
@@ -80,6 +81,7 @@ set(USD_LIBS
   libtf.so
   libusd.so
   libusdGeom.so
+  libusdLux.so
   libusdShade.so
   libusdSkel.so
   libusdUtils.so
